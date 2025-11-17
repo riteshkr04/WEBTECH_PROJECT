@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack Pro - Personal Fitness Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="logo">
+                <h1>💪 FitTrack Pro</h1>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active" data-page="wellness">
+                    <span class="icon">🏠</span>
+                    <span>Wellness</span>
+                </li>
+                <li class="nav-item" data-page="activities">
+                    <span class="icon">🏃</span>
+                    <span>Activities</span>
+                </li>
+                <li class="nav-item" data-page="meals">
+                    <span class="icon">🍽️</span>
+                    <span>Meal Planner</span>
+                </li>
+                <li class="nav-item" data-page="insights">
+                    <span class="icon">📊</span>
+                    <span>Insights</span>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <section id="wellness-page" class="page active">
+                <header class="page-header">
+                    <h2>Daily Wellness Overview</h2>
+                    <div class="live-clock" id="liveClock"></div>
+                </header>
+
+                <div class="wellness-grid">
+                    <div class="stat-card">
+                        <h3>Steps Today</h3>
+                        <div class="progress-circle" data-progress="0" id="stepsProgress">
+                            <svg viewBox="0 0 200 200">
+                                <circle class="progress-bg" cx="100" cy="100" r="85"></circle>
+                                <circle class="progress-bar" cx="100" cy="100" r="85" id="stepsCircle"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <span class="value" id="stepsValue">0</span>
+                                <span class="label">/ 10,000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>Calories Burned</h3>
+                        <div class="progress-circle" data-progress="0" id="caloriesProgress">
+                            <svg viewBox="0 0 200 200">
+                                <circle class="progress-bg" cx="100" cy="100" r="85"></circle>
+                                <circle class="progress-bar" cx="100" cy="100" r="85" id="caloriesCircle"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <span class="value" id="caloriesValue">0</span>
+                                <span class="label">/ 2,500</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>Water Intake</h3>
+                        <div class="progress-circle" data-progress="0" id="waterProgress">
+                            <svg viewBox="0 0 200 200">
+                                <circle class="progress-bg" cx="100" cy="100" r="85"></circle>
+                                <circle class="progress-bar" cx="100" cy="100" r="85" id="waterCircle"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <span class="value" id="waterValue">0</span>
+                                <span class="label">/ 8 glasses</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="activities-page" class="page">
+                <header class="page-header">
+                    <h2>Activity Log</h2>
+                    <button class="btn-primary" id="addActivityBtn">+ Add Activity</button>
+                </header>
+
+                <div class="filter-tabs">
+                    <button class="tab-btn active" data-filter="all">All</button>
+                    <button class="tab-btn" data-filter="morning">Morning</button>
+                    <button class="tab-btn" data-filter="afternoon">Afternoon</button>
+                    <button class="tab-btn" data-filter="evening">Evening</button>
+                </div>
+
+                <div class="activities-list" id="activitiesList"></div>
+            </section>
+
+            <section id="meals-page" class="page">
+                <header class="page-header">
+                    <h2>Meal Planner</h2>
+                    <div class="total-calories">
+                        Total: <span id="totalCalories">0</span> cal
+                    </div>
+                </header>
+
+                <div class="meals-grid">
+                    <div class="meal-section">
+                        <h3>🌅 Breakfast</h3>
+                        <div class="meal-items" id="breakfastItems"></div>
+                        <button class="btn-add-meal" data-meal-type="breakfast">+ Add Meal</button>
+                    </div>
+
+                    <div class="meal-section">
+                        <h3>☀️ Lunch</h3>
+                        <div class="meal-items" id="lunchItems"></div>
+                        <button class="btn-add-meal" data-meal-type="lunch">+ Add Meal</button>
+                    </div>
+
+                    <div class="meal-section">
+                        <h3>🌙 Dinner</h3>
+                        <div class="meal-items" id="dinnerItems"></div>
+                        <button class="btn-add-meal" data-meal-type="dinner">+ Add Meal</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="insights-page" class="page">
+                <header class="page-header">
+                    <h2>Insights & Summary</h2>
+                    <div class="action-buttons">
+                        <button class="btn-secondary" id="downloadBtn">📥 Download Summary</button>
+                        <button class="btn-danger" id="resetBtn">🔄 Reset Dashboard</button>
+                    </div>
+                </header>
+
+                <div class="insights-grid">
+                    <div class="chart-container">
+                        <h3>Weekly Activity Minutes</h3>
+                        <div class="bar-chart" id="activityChart"></div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Weekly Calories Burned</h3>
+                        <div class="bar-chart" id="caloriesChart"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal" id="activityModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Activity</h3>
+                <button class="close-btn" id="closeActivityModal">&times;</button>
+            </div>
+            <form id="activityForm">
+                <div class="form-group">
+                    <label for="activityName">Activity Name</label>
+                    <input type="text" id="activityName" placeholder="e.g., Running, Yoga" required>
+                </div>
+                <div class="form-group">
+                    <label for="activityDuration">Duration (minutes)</label>
+                    <input type="number" id="activityDuration" min="1" placeholder="30" required>
+                </div>
+                <div class="form-group">
+                    <label for="activityCalories">Calories Burned</label>
+                    <input type="number" id="activityCalories" min="1" placeholder="200" required>
+                </div>
+                <div class="form-group">
+                    <label for="activityTime">Time of Day</label>
+                    <select id="activityTime" required>
+                        <option value="">Select time</option>
+                        <option value="morning">Morning (5AM - 12PM)</option>
+                        <option value="afternoon">Afternoon (12PM - 6PM)</option>
+                        <option value="evening">Evening (6PM - 11PM)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Add Activity</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="mealModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Meal</h3>
+                <button class="close-btn" id="closeMealModal">&times;</button>
+            </div>
+            <form id="mealForm">
+                <div class="form-group">
+                    <label for="mealName">Meal Name</label>
+                    <input type="text" id="mealName" placeholder="e.g., Oatmeal" required>
+                </div>
+                <div class="form-group">
+                    <label for="mealCalories">Calories</label>
+                    <input type="number" id="mealCalories" min="1" placeholder="300" required>
+                </div>
+                <input type="hidden" id="mealType">
+                <button type="submit" class="btn-primary">Add Meal</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="successModal">
+        <div class="modal-content success">
+            <div class="success-icon">✓</div>
+            <h3 id="successMessage">Activity Added Successfully!</h3>
+            <button class="btn-primary" id="closeSuccessModal">OK</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
